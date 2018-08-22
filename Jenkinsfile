@@ -11,9 +11,11 @@ pipeline {
         checkout scm
       }
     }
-    stage('Build environment') {
+    stage('Build') {
       steps {
-        sh 'python -m pip install --user --upgrade pip'
+        withEnv(overrides: ["HOME=${env.WORKSPACE}"]) {
+          sh 'python -m pip install --user --upgrade pip'
+        }
       }
     }
   }
@@ -22,11 +24,8 @@ pipeline {
       echo 'Completed'
 
     }
-
     failure {
       echo 'Send e-mail, when failed'
-
     }
-
   }
 }
