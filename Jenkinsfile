@@ -27,16 +27,15 @@ pipeline {
       steps {
         echo "Style check"
         sh  ''' 
-                source test_app/bin/activate
-                pylint app || true
+            source test_app/bin/activate
+            pylint app || true
             '''
         echo "Raw metrics"
         sh  ''' 
-                source test_app/bin/activate
-                radon raw --json irisvmpy > raw_report.json
-                radon cc --json irisvmpy > cc_report.json
-                radon mi --json irisvmpy > mi_report.json
-                sloccount --duplicates --wide irisvmpy > sloccount.sc
+            source test_app/bin/activate
+            radon raw --json app > raw_report.json
+            radon cc --json app > cc_report.json
+            radon mi --json app > mi_report.json
             '''
       }
       post{
@@ -55,12 +54,27 @@ pipeline {
         }
       }
     }
+    stage('Unit tests') {
+      steps {
+        sh  ''' 
+            source test_app/bin/activate
+            python -m pytest --verbose --junit-xml reports/unit_tests.xml
+          '''
+      }
+      post {
+        always {
+          // Archive unit tests for the future
+          junit (allowEmptyResults: true,
+          testResults: './reports/unit_tests.xml',
+          fingerprint: true)
+          }
+        }
+    }
   }
 
   post {
     always {
       echo 'Completed'
-
     }
     failure {
       echo 'Send e-mail, when failed'
