@@ -25,11 +25,17 @@ pipeline {
     }
     stage('Static code metrics') {
       steps {
-          echo "Code Coverage"
-          sh  ''' source activate ${BUILD_TAG}
-                  coverage run irisvmpy/iris.py 1 1 2 3
-                  python -m coverage xml -o ./reports/coverage.xml
-              '''
+        echo "Raw metrics"
+        sh  ''' source activate ${BUILD_TAG}
+                radon raw --json app > raw_report.json
+                radon cc --json app > cc_report.json
+                radon mi --json app > mi_report.json
+                sloccount --duplicates --wide irisvmpy > sloccount.sc
+            '''
+        echo "Style check"
+        sh  ''' source activate ${BUILD_TAG}
+                pylint irisvmpy || true
+            '''
       }
       post{
         always{
