@@ -14,7 +14,12 @@ pipeline {
     stage('Build') {
       steps {
         withEnv(overrides: ["HOME=${env.WORKSPACE}"]) {
-          sh 'python -m pip install --user virtualenv'
+          sh '''
+              python -m pip install --user virtualenv
+              mkvirtualenv test-app
+              workon test-app
+              pip install -r requirements/dev.txt              
+             '''
         }
       }
     }
