@@ -11,7 +11,13 @@ pipeline {
         checkout scm
       }
     }
+    stage('Build environment') {
+      steps {
+        echo "${BUILD_TAG}"
+      }
+    }
   }
+
   post {
     always {
       echo 'Completed'
