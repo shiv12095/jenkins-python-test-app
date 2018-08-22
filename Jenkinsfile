@@ -18,7 +18,7 @@ pipeline {
               python -m pip install --user virtualenv
               python -m virtualenv test_app
               source test_app/bin/activate
-              python -m pip install --user -r requirements/dev.txt
+              python -m pip install -r requirements/dev.txt
              '''
         }
       }
