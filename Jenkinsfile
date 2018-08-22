@@ -27,6 +27,7 @@ pipeline {
       steps {
         echo "Style check"
         sh  ''' 
+                source test_app/bin/activate
                 pylint app || true
             '''
       }
