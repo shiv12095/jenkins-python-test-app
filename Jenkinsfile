@@ -13,7 +13,6 @@ pipeline {
     }
     stage('Build environment') {
       steps {
-        echo "${BUILD_TAG}"
         sh 'python -m pip install --user --upgrade pip'
       }
     }
