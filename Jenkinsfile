@@ -16,7 +16,7 @@ pipeline {
         withEnv(overrides: ["HOME=${env.WORKSPACE}"]) {
           sh '''
               python -m pip install --user virtualenv
-              virtualenv --version
+              python -m virtualenv --version
               pip install -r requirements/dev.txt              
              '''
         }
