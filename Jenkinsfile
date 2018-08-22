@@ -14,6 +14,7 @@ pipeline {
     stage('Build environment') {
       steps {
         echo "${BUILD_TAG}"
+        sh 'pip install virtualenv'
       }
     }
   }
