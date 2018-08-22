@@ -30,6 +30,14 @@ pipeline {
                 source test_app/bin/activate
                 pylint app || true
             '''
+        echo "Raw metrics"
+        sh  ''' 
+                source test_app/bin/activate
+                radon raw --json irisvmpy > raw_report.json
+                radon cc --json irisvmpy > cc_report.json
+                radon mi --json irisvmpy > mi_report.json
+                sloccount --duplicates --wide irisvmpy > sloccount.sc
+            '''
       }
       post{
         always{
