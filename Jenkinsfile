@@ -25,13 +25,6 @@ pipeline {
     }
     stage('Static code metrics') {
       steps {
-        echo "Raw metrics"
-        sh  ''' 
-                radon raw --json app > raw_report.json
-                radon cc --json app > cc_report.json
-                radon mi --json app > mi_report.json
-                sloccount --duplicates --wide irisvmpy > sloccount.sc
-            '''
         echo "Style check"
         sh  ''' 
                 pylint app || true
