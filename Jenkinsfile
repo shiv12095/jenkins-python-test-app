@@ -14,7 +14,7 @@ pipeline {
     stage('Build') {
       steps {
         withEnv(overrides: ["HOME=${env.WORKSPACE}"]) {
-          sh 'python -m pip install --user --upgrade pip'
+          sh 'python -m pip install --user virtualenv'
         }
       }
     }
