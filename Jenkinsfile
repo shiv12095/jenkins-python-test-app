@@ -15,7 +15,7 @@ pipeline {
       steps {
         withEnv(overrides: ["HOME=${env.WORKSPACE}"]) {
           sh '''
-              python -m pip install -r requirements/dev.txt
+              python -m pip install --user -r requirements/dev.txt
              '''
         }
       }
