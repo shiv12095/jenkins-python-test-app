@@ -15,9 +15,6 @@ pipeline {
       steps {
         withEnv(overrides: ["HOME=${env.WORKSPACE}"]) {
           sh '''
-              python -m pip install --user virtualenv
-              python -m virtualenv test_app
-              source test_app/bin/activate
               python -m pip install -r requirements/dev.txt
              '''
         }
@@ -27,12 +24,10 @@ pipeline {
       steps {
         echo "Style check"
         sh  ''' 
-            source test_app/bin/activate
             pylint app || true
             '''
         echo "Raw metrics"
         sh  ''' 
-            source test_app/bin/activate
             radon raw --json app > raw_report.json
             radon cc --json app > cc_report.json
             radon mi --json app > mi_report.json
@@ -57,7 +52,6 @@ pipeline {
     stage('Unit tests') {
       steps {
         sh  ''' 
-            source test_app/bin/activate
             python -m pytest --verbose --junit-xml reports/unit_tests.xml
           '''
       }
