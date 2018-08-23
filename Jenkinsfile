@@ -22,16 +22,18 @@ pipeline {
     }
     stage('Static code metrics') {
       steps {
-        echo "Style check"
-        sh  ''' 
-            pylint app || true
-            '''
-        echo "Raw metrics"
-        sh  ''' 
-            radon raw --json app > raw_report.json
-            radon cc --json app > cc_report.json
-            radon mi --json app > mi_report.json
-            '''
+        withEnv(overrides: ["HOME=${env.WORKSPACE}"]) {
+          echo "Style check"
+          sh  ''' 
+              pylint app || true
+              '''
+          echo "Raw metrics"
+          sh  ''' 
+              radon raw --json app > raw_report.json
+              radon cc --json app > cc_report.json
+              radon mi --json app > mi_report.json
+              '''
+        }
       }
       post{
         always{
